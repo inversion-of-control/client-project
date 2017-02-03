@@ -4,7 +4,7 @@ var path = require('path');
 var config;
 
 module.exports = function compile(cwd, mode) {
-    config = path.resolve(__dirname, '../lib/production.config.js'); 
+    config = path.resolve(__dirname, '../../lib/production.config.js'); 
     npmRun.exec('set NODE_ENV=production && webpack --progress --display-error-details --color --config ' + config, {cwd: cwd}, onCompile); 
 };
 
