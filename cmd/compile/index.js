@@ -1,14 +1,20 @@
-var fs = require('fs');
-var npmRun = require('npm-run');
-var path = require('path');
-var config;
+/**
+ * ============
+ * client-project COMMAND [compile]
+ * ============
+**/
 
-module.exports = function compile(cwd, mode) {
-    config = path.resolve(__dirname, '../../lib/production.config.js'); 
-    npmRun.exec('set NODE_ENV=production && webpack --progress --display-error-details --color --config ' + config, {cwd: cwd}, onCompile); 
-};
+const fs = require('fs')
+const npmRun = require('npm-run')
+const path = require('path')
+let webpack, config, command, values
 
-function onCompile(err, stdout, stderr) {
-    err === null && console.log("complete");  
-    err !== null && console.log("error: " + err.toString());
+module.exports = (cwd) => {
+    command = path.resolve(cwd, 'node_modules/@inversion-of-control/client-project/node_modules/.bin/webpack')
+    config = path.resolve(cwd, 'node_modules/@inversion-of-control/client-project/lib/production.config.js')
+    values = ['--config', config, '--progress', '--colors', '--display-error-details', '-p' ]
+
+    webpack = npmRun.spawn(command, values, {cwd})
+    webpack.stdout.on('data', (data) => {process.stdout.write(data)})
+    webpack.stderr.on('data', (data) => {process.stderr.write(data)})
 }

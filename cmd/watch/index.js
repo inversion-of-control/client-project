@@ -1,15 +1,20 @@
-var fs = require('fs');
-var npmRun = require('npm-run');
-var path = require('path');
-var exec, config;
+/**
+ * ============
+ * client-project COMMAND [watch]
+ * ============
+**/
 
-module.exports = function watch(cwd) {
-    exec = path.resolve(__dirname, '../../../../@inversion-of-control/client-project/node_modules/.bin/webpack-dev-server');
-    config = path.resolve(__dirname, '../../lib/development.config.js'); 
-    npmRun.exec(exec + ' --watch --config ' + config, {cwd: cwd}, onWatch); 
-};
+const fs = require('fs')
+const npmRun = require('npm-run')
+const path = require('path')
+let webpack, config, command, values
 
-function onWatch(err, stdout, stderr) {
-    err === null && console.log("complete");  
-    err !== null && console.log("error: " + err.toString());
+module.exports = (cwd) => {
+    command = path.resolve(cwd, 'node_modules/@inversion-of-control/client-project/node_modules/.bin/webpack-dev-server')
+    config = path.resolve(cwd, 'node_modules/@inversion-of-control/client-project/lib/development.config.js')
+    values = ['--config', config, '--watch', '--colors', '--client-log-level', 'error' ]
+
+    webpack = npmRun.spawn(command, values, {cwd})
+    webpack.stdout.on('data', (data) => {process.stdout.write(data)})
+    webpack.stderr.on('data', (data) => {process.stderr.write(data)})
 }

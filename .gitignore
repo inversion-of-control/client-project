@@ -1,6 +1,7 @@
-# NodeJS          #
+# Project         #
 ###################
 node_modules
+target
 
 # Compiled source #
 ###################

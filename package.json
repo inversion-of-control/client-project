@@ -1,6 +1,6 @@
 {
   "name": "@inversion-of-control/client-project",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "Tools for linting, building and testing",
   "main": "cli.js",
   "bin": {
